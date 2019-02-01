@@ -1,0 +1,3 @@
+java -Xmx1024M -Xms1024M -jar ~/.minecraft/zyczu-mc.jar
+java -Xmx1024M -Xms1024M -jar ~/.minecraft-serwer/minecraft_server.jar
+java -Xmx1024M -Xms1024M -jar ~/.minecraft/zyczu-mc.jar

@@ -1,0 +1,9 @@
+#!/bin/bash
+sudo paccache -r
+sudo paccache -rk 1
+sudo pacman -Sc --noconfirm
+sudo pacman -Scc --noconfirm
+sudo pacman -Qdt --noconfirm 
+sudo pacman -R $(pacman -Qdtq) --noconfirm
+sudo rm -rf /home/yorune/.cache/yay/*
+sudo rm -rf /home/root/.cache/yay/*
