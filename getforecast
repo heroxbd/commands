@@ -1,0 +1,4 @@
+#!/bin/sh
+# Updates weather forecast
+curl -s "wttr.in/$location" > /home/yorune/.weatherreport
+pkill -RTMIN+5 i3blocks

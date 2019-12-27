@@ -1,0 +1,2 @@
+FILE="$HOME/Screenshots/`date +%Y%m%d-%H.%M.%S.png`"
+gnome-screenshot -f "$FILE"

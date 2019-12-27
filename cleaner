@@ -1,9 +1,15 @@
 #!/bin/bash
-sudo paccache -r
-sudo paccache -rk 1
-sudo pacman -Sc --noconfirm
-sudo pacman -Scc --noconfirm
-sudo pacman -Qdt --noconfirm 
-sudo pacman -R $(pacman -Qdtq) --noconfirm
-sudo rm -rf /home/yorune/.cache/yay/*
-sudo rm -rf /home/root/.cache/yay/*
+sudo rm -rf /var/tmp/portage/*
+sudo rm -rf /var/tmp/binpkgs/*
+sudo rm -rf /var/tmp/genkernel/*
+sudo rm -rf /tmp/*
+sudo rm -rf /var/cache/genkernel/*
+sudo emerge --depclean
+sudo emerge @preserved-rebuild
+sudo eclean -C -q packages
+sudo eclean -C -q -d -t1w distfiles
+sudo revdep-rebuild
+sudo perl-cleaner --all
+sudo etc-update
+sudo env-update
+source /etc/profile

@@ -1,0 +1,54 @@
+#!/bin/bash
+clear
+BEGIN=$(date +"%s")
+echo -e "\e[93m----------------------COMPILING------------------------------\e[0m"
+sudo cp -rv /usr/src/linux/.config /home/yorune/Linux/kernel-config-`uname -r`
+cp -r /etc/portage/* /home/yorune/Linux/portage
+ls -d /var/db/pkg/*/*| cut -f5- -d/ > /home/yorune/Linux/portage/list-of-programs-"$(date +"%d-%m-%Y")"
+echo 
+echo
+echo -e "\e[93m----------------------SELECTION-----------------------------\e[0m"
+sudo eselect kernel list
+echo 
+echo
+read -p "New kernel is: " KERVER
+echo
+echo -e "Your kernel now is \e[91m$(uname -sr)\e[0m"
+echo -e "Your selected kernel is \e[91m"$KERVER"\e[0m"
+sudo eselect kernel set $KERVER
+sudo eselect kernel list | grep "*" 
+echo 
+
+read -p "Do you want to accept and compile (Y/N): " agreed 
+echo
+if [ "$agreed" == "y" ] || [ "$agreed" == "Y" ]
+	then 
+		echo -e "\e[91m----------------------\e[5mSTARTING\e[0m\e[91m------------------------------\e[0m" && sleep 10 && clear
+		$NOW > /tmp/compiling-starting
+		sudo genkernel all --makeopts=-j7 --menuconfig --kernel-config=/home/yorune/Linux/kernel-config-`uname -r`
+		sudo emerge nvidia-drivers
+	elif [ "$agreed" == "N" ] || [ "$agreed" == "n" ]
+	then
+	exit
+fi
+
+echo -e  "\e[31mI am leaving! Thank You!\e[0m" && sleep 3 && clear
+
+TERMIN=$(date +"%s")
+DIFFTLPS=$(($TERMIN-$BEGIN))
+#echo -e "\e[93m$(($DIFFTLPS / 60)) minutes and $(($DIFFTLPS % 60)) seconds \e[0m elapsed for Script Execution." && sleep 3 && exit
+echo
+echo
+echo -e "\e[93m----------------------REMEMBER-----------------------------\e[0m"
+echo "You must remove:"
+echo "* /lib/modules/OLD_KERNEL"
+echo "* /boot/initramfs-genkernel-OLD_KERNEL"
+echo "* /boot/kernel-genkernel-OLD_KERNEL"
+echo "* /boot/System.map-genkernel-OLD_KERNEL"
+echo "* /usr/src/linux-OLD_KERNEL"
+echo 
+echo -e "AFTER EVERYTHING YOU MUST WRITE COMMAND \e[91m"sudo grub-mkconfig -o /boot/grub/grub.cfg"\e[0m"
+
+echo -e "\e[93m------------------TIME COMPILATION-------------------------\e[0m"
+echo -e "\e[93m$(($DIFFTLPS / 60)) minutes and $(($DIFFTLPS % 60)) seconds \e[0m elapsed for Script Execution." && sleep 3 && exit
+
