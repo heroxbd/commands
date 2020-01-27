@@ -1,4 +1,14 @@
 #!/bin/sh
 # Updates weather forecast
-curl -s "wttr.in/$location" > /home/yorune/.weatherreport
-pkill -RTMIN+5 i3blocks
+
+FILE="$HOME/.weatherreport.tmp"
+FILER="$HOME/.weatherreport"
+
+curl -s --max-time 10 "wttr.in/$location" > $FILE 
+
+if [ -s "$FILE" ]
+then
+    mv $FILE $FILER
+else
+    rm $FILE 
+fi
